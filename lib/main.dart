@@ -1,41 +1,61 @@
+import 'package:animations_lesson/challenge.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(MaterialApp(home: ImplicitAnimationExample()));
+void main() => runApp(MaterialApp(home: CurvedAnimationExample()));
 
-// Implicit Animation
-//Definition: Implicit animations are animations that automatically animate changes to properties of a widget without requiring explicit animation controllers or tweens. They are simpler to implement and are useful for straightforward transitions.
-
-// Example: AnimatedContainer, AnimatedOpacity, AnimatedPadding, etc.
-
-//Code Example:
-// This example demonstrates an AnimatedContainer that changes its size and color when tapped.
-
-class ImplicitAnimationExample extends StatefulWidget {
-  const ImplicitAnimationExample({super.key});
+class CurvedAnimationExample extends StatefulWidget {
+  const CurvedAnimationExample({super.key});
 
   @override
-  ImplicitAnimationExampleState createState() => ImplicitAnimationExampleState();
+  CurvedAnimationExampleState createState() => CurvedAnimationExampleState();
 }
 
-class ImplicitAnimationExampleState extends State<ImplicitAnimationExample> {
-  bool _toggled = false;
+class CurvedAnimationExampleState extends State<CurvedAnimationExample>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<Offset> _slideAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 2),
+    )..forward();
+
+    _slideAnimation = Tween<Offset>(
+      begin: Offset(0, 2),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.bounceOut));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Implicit Animation")),
-      body: Center(
-        child: GestureDetector(
-          onTap: () {
-            setState(() => _toggled = !_toggled);
-          },
-          child: AnimatedContainer(
-            duration: Duration(seconds: 1),
-            curve: Curves.easeInOut,
-            width: _toggled ? 200 : 100,
-            height: _toggled ? 200 : 100,
-            color: _toggled ? Colors.blue : Colors.red,
+      appBar: AppBar(
+        title: Text("Curved Animation"),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.question_mark),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Challenge()),
+              );
+            },
           ),
+        ],
+      ),
+      body: Center(
+        child: SlideTransition(
+          position: _slideAnimation,
+          child: Container(width: 150, height: 150, color: Colors.indigo),
         ),
       ),
     );
