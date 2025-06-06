@@ -1,3 +1,4 @@
+import 'package:animations_lesson/challenge.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MaterialApp(home: ImplicitAnimationExample()));
@@ -14,7 +15,8 @@ class ImplicitAnimationExample extends StatefulWidget {
   const ImplicitAnimationExample({super.key});
 
   @override
-  ImplicitAnimationExampleState createState() => ImplicitAnimationExampleState();
+  ImplicitAnimationExampleState createState() =>
+      ImplicitAnimationExampleState();
 }
 
 class ImplicitAnimationExampleState extends State<ImplicitAnimationExample> {
@@ -23,7 +25,20 @@ class ImplicitAnimationExampleState extends State<ImplicitAnimationExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Implicit Animation")),
+      appBar: AppBar(
+        title: Text("Implicit Animation"),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.question_mark),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Challenge()),
+              );
+            },
+          ),
+        ],
+      ),
       body: Center(
         child: GestureDetector(
           onTap: () {
@@ -35,6 +50,16 @@ class ImplicitAnimationExampleState extends State<ImplicitAnimationExample> {
             width: _toggled ? 200 : 100,
             height: _toggled ? 200 : 100,
             color: _toggled ? Colors.blue : Colors.red,
+            child: Center(
+              child: Text(
+                //Text jumps in size when toggled but not smoothly as it is not animated
+                'Tap Me!',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: _toggled ? 24 : 16,
+                ),
+              ),
+            ),
           ),
         ),
       ),
