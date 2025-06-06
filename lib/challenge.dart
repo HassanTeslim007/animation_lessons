@@ -34,8 +34,8 @@ class _ChallengeState extends State<Challenge>
         child: AnimatedBuilder(
           animation: _controller,
           builder: (context, child) {
-            return ScaleTransition(
-              scale: Tween(begin: .5, end: 1.5).animate(_controller),
+            return Transform.scale(
+              scale: 0.5 + (_controller.value * 1.0),
               child: child,
             );
           },
@@ -45,4 +45,3 @@ class _ChallengeState extends State<Challenge>
     );
   }
 }
-
