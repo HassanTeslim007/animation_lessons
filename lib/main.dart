@@ -1,41 +1,46 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(MaterialApp(home: ImplicitAnimationExample()));
+void main() => runApp(MaterialApp(home: HeroFirstPage()));
 
-// Implicit Animation
-//Definition: Implicit animations are animations that automatically animate changes to properties of a widget without requiring explicit animation controllers or tweens. They are simpler to implement and are useful for straightforward transitions.
+//Hero animations automatically animate a widget from one screen to another when it's shared between routes using a Hero widget with the same tag.
 
-// Example: AnimatedContainer, AnimatedOpacity, AnimatedPadding, etc.
 
-//Code Example:
-// This example demonstrates an AnimatedContainer that changes its size and color when tapped.
-
-class ImplicitAnimationExample extends StatefulWidget {
-  const ImplicitAnimationExample({super.key});
-
-  @override
-  ImplicitAnimationExampleState createState() => ImplicitAnimationExampleState();
-}
-
-class ImplicitAnimationExampleState extends State<ImplicitAnimationExample> {
-  bool _toggled = false;
+class HeroFirstPage extends StatelessWidget {
+  const HeroFirstPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Implicit Animation")),
+      appBar: AppBar(title: Text("Hero Animation - Page 1")),
       body: Center(
         child: GestureDetector(
           onTap: () {
-            setState(() => _toggled = !_toggled);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => HeroSecondPage()),
+            );
           },
-          child: AnimatedContainer(
-            duration: Duration(seconds: 1),
-            curve: Curves.easeInOut,
-            width: _toggled ? 200 : 100,
-            height: _toggled ? 200 : 100,
-            color: _toggled ? Colors.blue : Colors.red,
+          child: Hero(
+            tag: 'heroBox',
+            child: Container(width: 100, height: 100, color: Colors.purple),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class HeroSecondPage extends StatelessWidget {
+  const HeroSecondPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Hero Animation - Page 2")),
+      body: Center(
+        child: Hero(
+          tag: 'heroBox',
+          child: Container(width: 300, height: 300, color: Colors.red),
         ),
       ),
     );
