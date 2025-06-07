@@ -1,3 +1,4 @@
+import 'package:animations_lesson/challenge.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MaterialApp(home: StaggeredExample()));
@@ -8,6 +9,10 @@ class StaggeredExample extends StatefulWidget {
   @override
   StaggeredExampleState createState() => StaggeredExampleState();
 }
+
+//Staggered animations are animations that start at different times or progress at different speeds, typically orchestrated by a single AnimationController. Each animation has its own Interval, defining when it should run during the controller's timeline.
+
+// Staggered animations are useful for creating complex animations that involve multiple elements, such as a sequence of animations that start at different times or progress at different speeds.
 
 class StaggeredExampleState extends State<StaggeredExample>
     with SingleTickerProviderStateMixin {
@@ -50,7 +55,20 @@ class StaggeredExampleState extends State<StaggeredExample>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Staggered Animation")),
+      appBar: AppBar(
+        title: Text("Staggered Animation"),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => StaggeredChallenge()),
+              );
+            },
+            icon: Icon(Icons.question_mark),
+          ),
+        ],
+      ),
       body: Center(
         child: AnimatedBuilder(
           animation: _controller,
