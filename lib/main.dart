@@ -1,43 +1,61 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
-void main() => runApp(MaterialApp(home: ImplicitAnimationExample()));
+void main() => runApp(MaterialApp(home: AnimatedWidgetExample()));
 
-// Implicit Animation
-//Definition: Implicit animations are animations that automatically animate changes to properties of a widget without requiring explicit animation controllers or tweens. They are simpler to implement and are useful for straightforward transitions.
+//AnimatedWidget is a base class that lets you create reusable and performance-efficient animated components without using setState() or AnimatedBuilder. You subclass it and pass in an Animation.
 
-// Example: AnimatedContainer, AnimatedOpacity, AnimatedPadding, etc.
+// It automatically rebuilds when the animation changes, allowing you to focus on the widget's appearance rather than the animation logic.
 
-//Code Example:
-// This example demonstrates an AnimatedContainer that changes its size and color when tapped.
+// Example: A spinning icon that rotates continuously using an AnimationController.
 
-class ImplicitAnimationExample extends StatefulWidget {
-  const ImplicitAnimationExample({super.key});
+class AnimatedWidgetExample extends StatefulWidget {
+  const AnimatedWidgetExample({super.key});
 
   @override
-  ImplicitAnimationExampleState createState() => ImplicitAnimationExampleState();
+  AnimatedWidgetExampleState createState() => AnimatedWidgetExampleState();
 }
 
-class ImplicitAnimationExampleState extends State<ImplicitAnimationExample> {
-  bool _toggled = false;
+class AnimatedWidgetExampleState extends State<AnimatedWidgetExample> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 2),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Implicit Animation")),
+      appBar: AppBar(title: Text("AnimatedWidget")),
       body: Center(
-        child: GestureDetector(
-          onTap: () {
-            setState(() => _toggled = !_toggled);
-          },
-          child: AnimatedContainer(
-            duration: Duration(seconds: 1),
-            curve: Curves.easeInOut,
-            width: _toggled ? 200 : 100,
-            height: _toggled ? 200 : 100,
-            color: _toggled ? Colors.blue : Colors.red,
-          ),
-        ),
+        child: SpinningIcon(animation: _controller),
       ),
+    );
+  }
+}
+
+class SpinningIcon extends AnimatedWidget {
+  const SpinningIcon({super.key, required Animation<double> animation})
+      : super(listenable: animation);
+
+  Animation<double> get animation => listenable as Animation<double>;
+
+  @override
+  Widget build(BuildContext context) {
+    return Transform.rotate(
+      angle: animation.value * 2 * pi,
+      child: Icon(Icons.sync, size: 100, color: Colors.blue),
     );
   }
 }
