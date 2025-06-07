@@ -1,9 +1,9 @@
+import 'package:animations_lesson/challenge.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MaterialApp(home: HeroFirstPage()));
 
 //Hero animations automatically animate a widget from one screen to another when it's shared between routes using a Hero widget with the same tag.
-
 
 class HeroFirstPage extends StatelessWidget {
   const HeroFirstPage({super.key});
@@ -11,7 +11,20 @@ class HeroFirstPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Hero Animation - Page 1")),
+      appBar: AppBar(
+        title: Text("Hero Animation - Page 1"),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HeroChallengeA()),
+              );
+            },
+            icon: Icon(Icons.question_mark),
+          ),
+        ],
+      ),
       body: Center(
         child: GestureDetector(
           onTap: () {
